@@ -1,0 +1,14 @@
+{
+  "name": "homebridge-lights-tcp",
+  "version": "0.0.1",
+  "description": "TCP light plugin for homebridge: https://github.com/nfarina/homebridge",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge-lights-tcp"
+  ],
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  }
+}
