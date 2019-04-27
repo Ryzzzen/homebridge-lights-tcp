@@ -21,10 +21,15 @@ class LightbulbAccessory {
 
     this.client.connect(this.config.port || 80, this.config.ip, () => {
       console.log('Connected');
+
+      this.client.write('/reset');
       this.client.write('/heartbeat');
 
       setInterval(() => this.client.write('/heartbeat'), 10000);
     });
+
+    this.context.brightness = 0;
+    this.context.on = false;
   }
 
   getServices () {
@@ -69,7 +74,7 @@ class LightbulbAccessory {
   }
 
   setOnCharacteristicHandler (value, callback) {
-    this.isOn = value;
+    this.context.on = value;
     this.client.write('/api/set/state/' + value ? 1 : 0);
 
     this.log(`calling setOnCharacteristicHandler`, value);
@@ -77,12 +82,12 @@ class LightbulbAccessory {
   }
 
   getOnCharacteristicHandler (callback) {
-    this.log(`calling getOnCharacteristicHandler`, this.isOn);
-    callback(null, this.isOn);
+    this.log(`calling getOnCharacteristicHandler`, this.context.on);
+    callback(null, this.context.on);
   }
 
   setBrightnessCharacteristicHandler (value, callback) {
-    this.brightness = value;
+    this.context.brightness = value;
     this.client.write('/api/set/brightness/' + value);
 
 
@@ -91,7 +96,7 @@ class LightbulbAccessory {
   }
 
   getBrightnessCharacteristicHandler (callback) {
-    this.log(`calling getBrightnessCharacteristicHandler`, this.isBrightness);
-    callback(null, this.isBrightness);
+    this.log(`calling getBrightnessCharacteristicHandler`, this.context.brightness);
+    callback(null, this.context.brightness);
   }
 };
