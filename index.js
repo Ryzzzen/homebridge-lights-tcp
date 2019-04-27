@@ -28,8 +28,7 @@ class LightbulbAccessory {
       setInterval(() => this.client.write('/heartbeat'), 10000);
     });
 
-    this.context.brightness = 0;
-    this.context.on = false;
+    this.context = { brightness: 0, on: false };
   }
 
   getServices () {
