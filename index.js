@@ -70,7 +70,7 @@ class LightbulbAccessory {
 
   setOnCharacteristicHandler (value, callback) {
     this.isOn = value;
-    client.write('/api/set/state/' + value ? 1 : 0);
+    this.client.write('/api/set/state/' + value ? 1 : 0);
 
     this.log(`calling setOnCharacteristicHandler`, value);
     callback(null);
@@ -83,7 +83,7 @@ class LightbulbAccessory {
 
   setBrightnessCharacteristicHandler (value, callback) {
     this.brightness = value;
-    client.write('/api/set/brightness/' + value);
+    this.client.write('/api/set/brightness/' + value);
 
 
     this.log(`calling setBrightnessCharacteristicHandler`, value);
