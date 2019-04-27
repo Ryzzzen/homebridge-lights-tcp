@@ -19,7 +19,7 @@ class LightbulbAccessory {
     this.service = new Service.Lightbulb(this.config.name);
     this.client = new net.Socket();
 
-    this.client.connect(80, this.config.ip, function() {
+    this.client.connect(this.config.port || 80, this.config.ip, function() {
       console.log('Connected');
       client.write('/heartbeat');
 
