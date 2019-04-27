@@ -44,7 +44,7 @@ class LightbulbAccessory {
 
       if (this.config.hasBrightness) {
           this.log('... Adding Brightness');
-          lightbulbService
+          this.service
               .addCharacteristic(new Characteristic.Brightness())
               .on('get', this.getBrightnessCharacteristicHandler.bind(this))
               .on('set', this.setBrightnessCharacteristicHandler.bind(this));
