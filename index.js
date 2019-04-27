@@ -21,9 +21,9 @@ class LightbulbAccessory {
 
     this.client.connect(this.config.port || 80, this.config.ip, function() {
       console.log('Connected');
-      client.write('/heartbeat');
+      this.client.write('/heartbeat');
 
-      setInterval(() => client.write('/heartbeat'), 10000);
+      setInterval(() => this.client.write('/heartbeat'), 10000);
     });
   }
 
