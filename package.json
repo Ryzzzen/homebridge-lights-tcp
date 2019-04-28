@@ -1,11 +1,11 @@
 {
-  "name": "homebridge-lights-tcp",
+  "name": "homebridge-lights-udp",
   "version": "0.0.1",
-  "description": "TCP light plugin for homebridge: https://github.com/nfarina/homebridge",
+  "description": "UDP light plugin for homebridge: https://github.com/nfarina/homebridge",
   "license": "ISC",
   "keywords": [
     "homebridge-plugin",
-    "homebridge-lights-tcp"
+    "homebridge-lights-udp"
   ],
   "engines": {
     "node": ">=0.12.0",

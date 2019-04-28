@@ -1,6 +1,6 @@
 'use strict'
 
-const net = require('net');
+const udp = require('dgram');
 
 let Service, Characteristic;
 
@@ -8,7 +8,7 @@ module.exports = homebridge => {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
 
-  homebridge.registerAccessory('homebridge-lights-tcp', 'TCPLightbulbAccessory', LightbulbAccessory);
+  homebridge.registerAccessory('homebridge-lights-udp', 'UDPLightbulbAccessory', LightbulbAccessory);
 }
 
 class LightbulbAccessory {
@@ -19,14 +19,7 @@ class LightbulbAccessory {
     this.service = new Service.Lightbulb(this.config.name);
     this.client = new net.Socket();
 
-    this.client.connect(this.config.port || 80, this.config.ip, () => {
-      console.log('Connected');
-
-      this.client.write('/reset');
-      this.client.write('/heartbeat');
-
-      setInterval(() => this.client.write('/heartbeat'), 10000);
-    });
+    this.client = udp.createSocket('udp4');
 
     this.context = { brightness: 0, on: false };
   }
@@ -73,11 +66,12 @@ class LightbulbAccessory {
   }
 
   setOnCharacteristicHandler (value, callback) {
-    this.context.on = value;
-    this.client.write('/api/set/state/' + value ? 1 : 0);
+    this.client.send('/api/set/state/' + value ? 1 : 0, this.config.port, this.config.ip, err => {
+      if (err) return callback(err);
+      callback(null, this.context.on = value);
+    });
 
     this.log(`calling setOnCharacteristicHandler`, value);
-    callback(null);
   }
 
   getOnCharacteristicHandler (callback) {
@@ -86,12 +80,10 @@ class LightbulbAccessory {
   }
 
   setBrightnessCharacteristicHandler (value, callback) {
-    this.context.brightness = value;
-    this.client.write('/api/set/brightness/' + value);
-
-
-    this.log(`calling setBrightnessCharacteristicHandler`, value);
-    callback(null);
+    this.client.send('/api/set/brightness/' + value, this.config.port, this.config.ip, err => {
+      if (err) return callback(err);
+      callback(null, this.context.brightness = value);
+    });
   }
 
   getBrightnessCharacteristicHandler (callback) {
