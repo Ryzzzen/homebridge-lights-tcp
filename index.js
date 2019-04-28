@@ -68,7 +68,7 @@ class LightbulbAccessory {
   }
 
   setOnCharacteristicHandler (value, callback) {
-    this.client.send(Buffer.from('/api/set/state/' + value ? 1 : 0, this.config.port), this.config.ip, err => {
+    this.client.send(Buffer.from('/api/set/state/' + value ? 1 : 0), this.config.port, this.config.ip, err => {
       if (err) return callback(err);
       callback(null, this.context.on = value);
     });
