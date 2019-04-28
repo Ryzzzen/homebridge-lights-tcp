@@ -1,1 +1,1 @@
-# homebridge-lights-tcp
+# homebridge-lights-udp
