@@ -20,6 +20,7 @@ class LightbulbAccessory {
     this.client = udp.createSocket('udp4');
 
     this.context = { brightness: 0, on: false };
+    console.dir(this.config.port);
 
     this.client.send(Buffer.from('/reset', this.config.port), this.config.ip, err => {
       if (err) console.error(err);
