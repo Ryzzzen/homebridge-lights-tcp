@@ -20,6 +20,10 @@ class LightbulbAccessory {
     this.client = udp.createSocket('udp4');
 
     this.context = { brightness: 0, on: false };
+
+    this.client.send(Buffer.from('/reset', this.config.port), this.config.ip, err => {
+      if (err) console.error(err);
+    });
   }
 
   getServices () {
@@ -64,7 +68,7 @@ class LightbulbAccessory {
   }
 
   setOnCharacteristicHandler (value, callback) {
-    this.client.send('/api/set/state/' + value ? 1 : 0, this.config.port, this.config.ip, err => {
+    this.client.send(Buffer.from('/api/set/state/' + value ? 1 : 0, this.config.port), this.config.ip, err => {
       if (err) return callback(err);
       callback(null, this.context.on = value);
     });
@@ -78,7 +82,7 @@ class LightbulbAccessory {
   }
 
   setBrightnessCharacteristicHandler (value, callback) {
-    this.client.send('/api/set/brightness/' + value, this.config.port, this.config.ip, err => {
+    this.client.send(Buffer.from('/api/set/brightness/' + value), this.config.port, this.config.ip, err => {
       if (err) return callback(err);
       callback(null, this.context.brightness = value);
     });
