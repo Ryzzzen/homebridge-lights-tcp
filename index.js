@@ -17,8 +17,6 @@ class LightbulbAccessory {
     this.config = config
 
     this.service = new Service.Lightbulb(this.config.name);
-    this.client = new net.Socket();
-
     this.client = udp.createSocket('udp4');
 
     this.context = { brightness: 0, on: false };
